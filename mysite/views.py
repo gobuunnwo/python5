@@ -18,7 +18,7 @@ def home(request):
         # { "type": "success", "value": { "id": 468, "joke": " Norris's beard can type 140 wpm.", "categories": ["nerdy"] } }
         # につながる。この中に、"value"　と　"joke"　がある。その２つを下のgetで開く
         joke=json_data.get('value').get('joke')
-        
+
         # print(joke)
         context={
             'joker': joke
@@ -58,3 +58,7 @@ def contact(request):
         return render(request, 'mysite/thank.html')
     else:
         return render(request, 'mysite/contact.html')
+
+
+
+        # asdfghjkl;:
