@@ -1,8 +1,46 @@
 from django.shortcuts import render
 from . models import Contact
+import requests
+import json
+
 # Create your views here.
 def home(request):
-    return render(request, 'mysite/home.html')
+    if request.method=='POST':
+        firstname=request.POST.get('fname')
+        lastname=request.POST.get('lname')
+
+        anything=requests.get('http://api.icndb.com/jokes/random?firstName='+ firstname + '&lastName='+ lastname)
+        json_data=json.loads(anything.text)
+        # print(anything.text)
+        # print(json_data)
+
+        # 上の'http://api.icndb.com/jokes/random?firstName='のリンクを開くと、
+        # { "type": "success", "value": { "id": 468, "joke": " Norris's beard can type 140 wpm.", "categories": ["nerdy"] } }
+        # につながる。この中に、"value"　と　"joke"　がある。その２つを下のgetで開く
+        joke=json_data.get('value').get('joke')
+        
+        # print(joke)
+        context={
+            'joker': joke
+        }
+
+        return render(request, 'mysite/home.html', context)
+
+    else:
+        firstname='lohit'
+        lastname='badiger'
+        anything=requests.get('http://api.icndb.com/jokes/random?firstName='+ firstname + '&lastName='+ lastname)
+        json_data=json.loads(anything.text)
+        # print(anything.text)
+        # print(json_data)
+        joke=json_data.get('value').get('joke')
+        # print(joke)
+        context={
+            'joker': joke
+        }
+
+        return render(request, 'mysite/home.html', context)
+
 
 def portfolio(request):
     return render(request, 'mysite/portfolio.html')
